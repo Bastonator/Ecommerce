@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'Products',
     'mptt',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -81,8 +82,12 @@ WSGI_APPLICATION = 'StoreCore.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'databasestore',
+        'USER': 'postgres',
+        'PASSWORD': 'Xbrick48me#1',
+        'HOST': 'databasestore.cpqk6cw2wrwn.eu-north-1.rds.amazonaws.com',
+        'PORT': '5432',##the port number u set
     }
 }
 
@@ -121,7 +126,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media/"
@@ -138,3 +142,23 @@ CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
+
+
+AWS_ACCESS_KEY_ID = 'AKIAXZRBXLNEEDCSXGYD'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'storefrontbuckets3eddy'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_VERIFY = True
+AWS_DEFAULT_ACL = None
+AWS_S3_SIGNATURE_NAME = 's3v4'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
+
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Static files
+STATIC_LOCATION = 'static'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
