@@ -141,7 +141,12 @@ AUTH_USER_MODEL = "Products.Users"
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://16.171.6.79']
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://16.171.6.79',
+]
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 
 AWS_ACCESS_KEY_ID = 'AKIAXZRBXLNEEDCSXGYD'
