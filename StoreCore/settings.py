@@ -164,7 +164,3 @@ AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 STATIC_LOCATION = 'static'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
-
-MEDIAFILES_LOCATION = 'media'
-MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-MEDIA_ROOT = os.path.join (BASE_DIR, 'media/images/')
