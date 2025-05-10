@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(os.path.join(BASE_DIR, '.env'))  # Load environment variables
 
 
 # Quick-start development settings - unsuitable for production
@@ -146,8 +148,8 @@ CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 
 
-AWS_ACCESS_KEY_ID = 'AKIAXZRBXLNEHATYOBF3'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = 'storefrontbucket3ubeg3'
 AWS_S3_REGION_NAME = 'eu-north-1'
 AWS_S3_FILE_OVERWRITE = False
