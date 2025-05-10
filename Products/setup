@@ -1,3 +1,65 @@
+sudo apt update
+
+sudo apt install python3-pip python3-dev nginx
+
+sudo apt install python3-virtualenv
+
+git clone "repo url"
+
+then cd to clode directory
+
+virtualenv env
+
+source env/bin/activate
+
+sudo apt-get install -y libpq-dev
+
+pip install -r requirements.txt
+
+pip install gunicorn
+
+edit security group for rds and add postgresql and ssh inbound and attach to lauch wizard
+
+deactivate
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowPublicRead",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::__:user/"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::blogs3sourcecode/admin/*"
+        }
+    ]
+}
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowPublicRead",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::storefrontbuckets3eddy/admin/*"
+        }
+    ]
+}
+
+sudo vim /etc/systemd/system/gunicorn.socket
+
+[Unit]
+Description=gunicorn socket
+[Socket]
+ListenStream=/run/gunicorn.sock
+[Install]
+WantedBy=sockets.target
+
+
 sudo vim /etc/systemd/system/gunicorn.service
 
 
@@ -8,29 +70,71 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/ubuntu/Ecommerce
-ExecStart=/home/ubuntu/Ecommerce/env/bin/gunicorn \
+WorkingDirectory=/home/ubuntu/DocbaseBackend
+ExecStart=/home/ubuntu/DocbaseBackend/env/bin/gunicorn \
         --access-logfile - \
         --workers 3 \
         --bind unix:/run/gunicorn.sock \
-        StoreCore.wsgi:application
+        --timeout 300 \
+        Docbase.wsgi:application
 [Install]
 WantedBy=multi-user.target
 
-sudo vim /etc/nginx/sites-available/StoreCore
+sudo systemctl start gunicorn.socket
+
+sudo systemctl enable gunicorn.socket
+
+cd /etc/nginx/sites-enabled/
+
+sudo rm -f default
+
+cd ..
+
+cd ..
+
+cd ..
+cd ..
+cd 
+
+sudo vim /etc/nginx/sites-available/Docbase
 
 
 server {
     listen 80 default_server;
     server_name _;
     location = /favicon.ico { access_log off; log_not_found off; }
-    location /static/ {
-        root /home/ubuntu/Ecommerce;
+    location /staticfiles_build/ {
+        root /home/ubuntu/DocbaseBackend;
     }
     location / {
         include proxy_params;
         proxy_pass http://unix:/run/gunicorn.sock;
+        proxy_read_timeout 300;
+        proxy_connect_timeout 300;
+        proxy_send_timeout 300;
     }
 }
 
-sudo ln -s /etc/nginx/sites-available/StoreCore /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/Docbase /etc/nginx/sites-enabled/
+
+sudo gpasswd -a www-data ubuntu
+
+sudo systemctl restart nginx
+
+sudo service gunicorn restart
+
+sudo service nginx restart
+
+///ssl certificate
+sudo mkdir /etc/ssl/private
+
+sudo chmod 700 /etc/ssl/private
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+
+ssh -i "storekey.pem" ubuntu@ec2-16-171-6-79.eu-north-1.compute.amazonaws.com
+
+sudo rm /etc/nginx/sites-enabled/nginx
+
+ls /etc/nginx/sites-available/
+

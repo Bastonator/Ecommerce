@@ -141,10 +141,10 @@ class Product(models.Model):
                                                 "max_length": _("The price must be between 0 and 99999.9"),
                                             },
                                         }, max_digits=7, decimal_places=1)
-    image = models.ImageField(verbose_name=_("image1"), help_text=_('upload image'), upload_to="images/", null=True, blank=True)
-    image_first = models.ImageField(verbose_name=_("image2"), help_text=_('upload image'), upload_to="images/", null=True, blank=True)
-    image_second = models.ImageField(verbose_name=_("image3"), help_text=_('upload image'), upload_to="images/", null=True, blank=True)
-    image_third = models.ImageField(verbose_name=_("image4"), help_text=_('upload image'), upload_to="images/", null=True, blank=True)
+    image = models.ImageField(verbose_name=_("image1"), help_text=_('upload image'), null=True, blank=True)
+    image_first = models.ImageField(verbose_name=_("image2"), help_text=_('upload image'), null=True, blank=True)
+    image_second = models.ImageField(verbose_name=_("image3"), help_text=_('upload image'), null=True, blank=True)
+    image_third = models.ImageField(verbose_name=_("image4"), help_text=_('upload image'), null=True, blank=True)
     is_active = models.BooleanField(verbose_name=_("Product Visibility"), help_text=_("Set Product Visibility"), default=True)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
